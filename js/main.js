@@ -219,91 +219,105 @@ function parseAndCreate(jsonData) {
     /**
      * Parse the passed jsonData and create div's accordingly.
      */
-    this.userName = jsonData["user"]
+    this.userName = jsonData["user"];
 
     // Enable the settings button if it is enabled
-    if (jsonData["settingsIcon"]) enableCog();
+    if (jsonData["settingsIcon"]) {
+        enableCog();
+    }
 
     // Set the page title if it is passed by the user
-    if (jsonData["title"]) document.title = jsonData["title"]
+    if (jsonData["title"]) {
+        document.title = jsonData["title"];
+    }
 
     // If the user has not passed any custom message
     if (Object.keys(jsonData).includes("message") &&
             typeof(jsonData["message"]) == "string" &&
-            jsonData["message"] != "")
-        builtMsg = jsonData["message"]
-    else
+            jsonData["message"] != "") {
+        builtMsg = jsonData["message"];
+    } else {
         builtMsg = this.handleMessage(this.userName);
+    }
+    document.getElementById(messageId).textContent = builtMsg;
 
-    document.getElementById(messageId).textContent = builtMsg
     // Check if 24 hour is disabled
-    disable24Hour = jsonData["disable24Hour"]
-    timeZ = jsonData["timeZone"]
-    timeZ = isValidTimeZone(timeZ) ? timeZ : undefined
+    disable24Hour = jsonData["disable24Hour"];
+    timeZ = jsonData["timeZone"];
+    timeZ = isValidTimeZone(timeZ) ? timeZ : undefined;
+
     // Check if welcome message is supposed to be disabled
-    if (jsonData["disableMessage"])
-        document.getElementById(messageDivId).style.display = "none"
+    if (jsonData["disableMessage"]) {
+        document.getElementById(messageDivId).style.display = "none";
+    }
+
     if (jsonData["disableDate"]) {
         // Hide the date and the line
-        document.getElementById(dateId).style.display = "none"
-        document.getElementById(lineId).style.display = "none"
+        document.getElementById(dateId).style.display = "none";
+        document.getElementById(lineId).style.display = "none";
+    } else {
+        updateTimeHook();
     }
-    else
-        updateTimeHook()
-    if (jsonData["disableWeather"]){
+
+    if (jsonData["disableWeather"]) {
         // Hide the date and the line
-        document.getElementById(weatherId).style.display = "none"
-        document.getElementById(lineId).style.display = "none"
+        document.getElementById(weatherId).style.display = "none";
+        document.getElementById(lineId).style.display = "none";
+    } else {
+        updateWeather(jsonData["weatherConf"]);
     }
-    else
-        updateWeather(jsonData["weatherConf"])
-    if (jsonData["disableSearchBar"])
-        document.getElementById(searchBarDivId).style.display = "none"
-    else
-        initSearchBar(jsonData)
     
-    if (jsonData["background"])
-        if (jsonData["background"]["picsum"])
-            picsumUrl = "https://picsum.photos/"
-            picsumUrl += window.screen.availWidth + '/' + window.screen.availHeight + '/'
-            if (jsonData["background"]["picsum"]["blur"])
-                picsumUrl += "?blur"
-            if (jsonData["background"]["picsum"]["blurStrength"])
-                picsumUrl += "=" + jsonData["background"]["picsum"]["blurStrength"]
-            document.getRootNode().body.style.backgroundImage = 'url("' + picsumUrl + '")'
+    if (jsonData["disableSearchBar"]) {
+        document.getElementById(searchBarDivId).style.display = "none";
+    } else {
+        initSearchBar(jsonData);
+    }
+    
+    if (jsonData["background"]) {
+        if (jsonData["background"]["picsum"]) {
+            picsumUrl = "https://picsum.photos/";
+            picsumUrl += window.screen.availWidth + '/' + window.screen.availHeight + '/';
+            if (jsonData["background"]["picsum"]["blur"]) {
+                picsumUrl += "?blur";
+            }
+            if (jsonData["background"]["picsum"]["blurStrength"]) {
+                picsumUrl += "=" + jsonData["background"]["picsum"]["blurStrength"];
+            }
+            document.getRootNode().body.style.backgroundImage = 'url("' + picsumUrl + '")';
+        }
+    }
 
-
-    sqrs = jsonData["squares"]
+    sqrs = jsonData["squares"];
 
     sqrs.forEach((element, index) => {
-        sqr = createSqr(element, index)
-        document.getElementById(otherContentId).appendChild(sqr)
+        sqr = createSqr(element, index);
+        document.getElementById(otherContentId).appendChild(sqr);
     })
 
     // Apply styling if present
     if (jsonData["style"]) {
-        styleData = jsonData["style"]
+        styleData = jsonData["style"];
         if (styleData["backgroundColor"]) {
-            document.body.style.backgroundColor = styleData["backgroundColor"]
+            document.body.style.backgroundColor = styleData["backgroundColor"];
         }
         if (styleData["messageColor"]) {
-            document.getElementById(messageId).style.color = styleData["messageColor"]
+            document.getElementById(messageId).style.color = styleData["messageColor"];
         }
         if (styleData["dateColor"]) {
-            document.getElementById(dateId).style.color = styleData["dateColor"]
+            document.getElementById(dateId).style.color = styleData["dateColor"];
         }
         if (styleData["lineColor"]) {
-            document.getElementById(lineId).style.color = styleData["lineColor"]
+            document.getElementById(lineId).style.color = styleData["lineColor"];
         }
         if (styleData["weatherColor"]) {
-            document.getElementById(weatherId).style.color = styleData["weatherColor"]
+            document.getElementById(weatherId).style.color = styleData["weatherColor"];
         }
         if (styleData["searchColor"]) {
-            document.getElementById(searchBarId).style.color = styleData["searchColor"]
+            document.getElementById(searchBarId).style.color = styleData["searchColor"];
         }
         if (styleData["searchBackgroundColor"]) {
-            document.getElementById(searchBarId).style.backgroundColor = styleData["searchBackgroundColor"]
-            autocompleteBackgroundColor = styleData["searchBackgroundColor"]
+            document.getElementById(searchBarId).style.backgroundColor = styleData["searchBackgroundColor"];
+            autocompleteBackgroundColor = styleData["searchBackgroundColor"];
         }
         if (styleData["searchPlaceholderColor"]) {
             document.getElementById(searchBarId).classList.add(createPlaceholderStyleClass(styleData["searchPlaceholderColor"]));
@@ -312,17 +326,17 @@ function parseAndCreate(jsonData) {
             addAutocompleteStyleClass(styleData["autocompleteHighlightBackgroundColor"]);
         }
         if (styleData["squareBackgroundColor"]) {
-            elements = document.getElementsByClassName("sqr")
+            elements = document.getElementsByClassName("sqr");
             var i;
             for (i = 0; i < elements.length; i++) {
-                elements[i].style.backgroundColor = styleData["squareBackgroundColor"]
+                elements[i].style.backgroundColor = styleData["squareBackgroundColor"];
             }
         }
         if (styleData["squareColor"]) {
-            elements = document.querySelectorAll(".sqr a")
+            elements = document.querySelectorAll(".sqr a");
             var i;
             for (i = 0; i < elements.length; i++) {
-                elements[i].style.color = styleData["squareColor"]
+                elements[i].style.color = styleData["squareColor"];
             }
         }
     }
