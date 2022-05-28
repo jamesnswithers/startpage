@@ -16,7 +16,7 @@
         { "name": "Gmail", "url": "http://gmail.com/"}
       ]
     },
-    { "name": "News",
+    { "name": "news",
       "color": "#d5d4e2",
       "links": [
         { "name": "SkySports", "url": "https://skysports.com/" },
@@ -28,11 +28,11 @@
   ],
   "title": "Start Page",
   "searchEngine":"DuckDuckGo",
-  "user": "",
+  "user": "TestUser",
   "enableMessage": true,
-  "enableDate": false,
+  "enableDate": true,
   "enableSearchBar": true,
-  "enableWeather": true,
+  "enableWeather": false,
   "disable24Hour": false,
   "timeZone": "Europe/London",
   "weatherConf": {

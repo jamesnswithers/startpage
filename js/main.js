@@ -9,7 +9,7 @@ debug = false; // Enable while testing on local
 searchBarDivId = "search-bar"
 searchBarId = "search-bar-input"
 messageDivId = "message"
-dateDivId = "date"
+dateWeatherDivId = "date-weather"
 dateId = "date-text"
 weatherId = "weather-text"
 lineId = "line"
@@ -253,15 +253,19 @@ function parseAndCreate(jsonData) {
 
     if (jsonData["enableDate"]) {
         // Enable the date and the line
+        document.getElementById(dateWeatherDivId).style.display = "";
         document.getElementById(dateId).style.display = "";
-        document.getElementById(lineId).style.display = "";
         updateTimeHook();
+    }
+
+    if (jsonData["enableDate"] && jsonData["enableWeather"]) {
+        document.getElementById(lineId).style.display = "";
     }
 
     if (jsonData["enableWeather"]) {
         // Hide the date and the line
+        document.getElementById(dateWeatherDivId).style.display = "";
         document.getElementById(weatherId).style.display = "";
-        document.getElementById(lineId).style.display = "";
         updateWeather(jsonData["weatherConf"]);
     }
     
