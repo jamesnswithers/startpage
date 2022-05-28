@@ -43,10 +43,10 @@
   "disableDate": false,
   "disableSearchBar": false,
   "disable24Hour": false,
-  "disableWeather": false,
+  "disableWeather": true,
   "timeZone": "Europe/London",
   "weatherConf": {
-    "location": "Bexhill United Kingom",
+    "location": "Bexhill GB",
     "unit": "cel"
   },
   "settingsIcon": false,
@@ -61,6 +61,12 @@
     "squareColor": "#9e9e9e",
     "squareBackgroundColor": "#2e2e2e",
     "autocompleteHighlightBackgroundColor": "#3B3B3B"
+  },
+  "background": {
+    "picsum": {
+      "blur": true,
+      "blurStrength": 1
+    }
   },
   "quickLinks": {
     "r": "https://reddit.com",

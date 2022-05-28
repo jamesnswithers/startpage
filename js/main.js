@@ -261,6 +261,17 @@ function parseAndCreate(jsonData) {
         document.getElementById(searchBarDivId).style.display = "none"
     else
         initSearchBar(jsonData)
+    
+    if (jsonData["background"])
+        if (jsonData["background"]["picsum"])
+            picsumUrl = "https://picsum.photos/"
+            picsumUrl += window.screen.availWidth + '/' + window.screen.availHeight + '/'
+            if (jsonData["background"]["picsum"]["blur"])
+                picsumUrl += "?blur"
+            if (jsonData["background"]["picsum"]["blurStrength"])
+                picsumUrl += "=" + jsonData["background"]["picsum"]["blurStrength"]
+            document.getRootNode().body.style.backgroundImage = 'url("' + picsumUrl + '")'
+
 
     sqrs = jsonData["squares"]
 
