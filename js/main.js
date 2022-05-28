@@ -18,8 +18,8 @@ timeZ = undefined
 otherContentId = "other-content"
 userName = ""
 disable24Hour = false;
-appId = "fd2c04ed7f9802656bd2cc23bddc7ad9"
-apiUrl = "http://api.openweathermap.org/data/2.5/weather"
+weatherAppId = ""
+weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather"
 bgClassContainer = [
     "media",
     "work",
@@ -184,7 +184,7 @@ function updateWeather(weatherConfig) {
     unit = validWeatherUnit.includes(passedUnit.substring(0, 3)) ?
         passedUnit : "cel"
 
-    fetchUrl = apiUrl + `?q=${userLocation}&appid=${appId}&units=metric`
+    fetchUrl = weatherApiUrl + `?q=${userLocation}&appid=${weatherAppId}&units=metric`
 
     fetch(fetchUrl)
         .then(response => {return response.json()})
