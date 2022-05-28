@@ -56,7 +56,7 @@ function initBody() {
      * other things.
      */
     // If running on local, just read the conf
-    if (debug) {
+    if (debug || !BROWSER) {
         readJSON("config.json");
         return;
     }
@@ -212,7 +212,7 @@ function readJSON(fileName) {
 function saveSettings(settings) {
     if (debug) return;
 
-    BROWSER.storage.sync.set(settings)
+    if (BROWSER) BROWSER.storage.sync.set(settings);
 }
 
 function parseAndCreate(jsonData) {
