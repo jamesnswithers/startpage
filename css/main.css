@@ -43,7 +43,7 @@ body {
 .main #date-text,
 .main #line,
 .main #weather-text,
-.main #search-bar,
+.main #search-bar-container,
 .main #message {
   display: none;
 }
