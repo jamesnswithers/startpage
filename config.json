@@ -28,15 +28,15 @@
   ],
   "title": "Start Page",
   "searchEngine":"DuckDuckGo",
-  "user": "TestUser",
-  "enableMessage": true,
-  "enableDate": true,
-  "enableSearchBar": true,
+  "user": "username",
+  "enableMessage": false,
+  "enableDate": false,
+  "enableSearchBar": false,
   "enableWeather": false,
   "disable24Hour": false,
   "timeZone": "Europe/London",
   "weatherConf": {
-    "location": "Bexhill, GB",
+    "location": "",
     "unit": "cel"
   },
   "settingsIcon": true,
@@ -54,8 +54,8 @@
   },
   "background": {
     "picsum": {
-      "blur": true,
-      "blurStrength": 1
+      "blur": false,
+      "blurStrength": 0
     }
   },
   "quickLinks": {
