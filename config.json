@@ -32,7 +32,7 @@
   "enableMessage": true,
   "enableDate": true,
   "enableSearchBar": true,
-  "enableWeather": false,
+  "enableWeather": true,
   "disable24Hour": false,
   "timeZone": "Europe/London",
   "weatherConf": {
