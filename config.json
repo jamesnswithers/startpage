@@ -31,7 +31,7 @@
   "user": "username",
   "enableMessage": false,
   "enableDate": false,
-  "enableSearchBar": false,
+  "enableSearchBar": true,
   "enableWeather": false,
   "disable24Hour": false,
   "timeZone": "Europe/London",

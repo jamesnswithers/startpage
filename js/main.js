@@ -6,7 +6,7 @@ window.onload = function() {
 
 
 debug = false; // Enable while testing on local
-searchBarDivId = "search-bar"
+searchBarDivId = "search-bar-container"
 searchBarId = "search-bar-input"
 messageDivId = "message"
 dateWeatherDivId = "date-weather"
@@ -72,7 +72,7 @@ function initSearchBar(jsonData) {
     document.getElementById(searchBarId).value = ""
     document.getElementById(searchBarId).focus()
     searchEngine = jsonData["searchEngine"]
-    if(!Object.keys(this.searchEngines).includes(searchEngine)){
+    if (!Object.keys(this.searchEngines).includes(searchEngine)) {
         searchEngine = "Google"
     }
     searchUrl = this.searchEngines[searchEngine]
