@@ -10,9 +10,12 @@
 modalId = "settings"
 closeId = "close"
 jsonContainer = "jsoneditor"
+browserExtension = false
 
 // Detect browser
-BROWSER = detectBrowser()
+BROWSER = false
+if (browserExtension)
+    BROWSER = detectBrowser()
 
 function showSettings() {
     modalEl = document.getElementById(modalId)
