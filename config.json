@@ -12,7 +12,7 @@
     { "name": "work",
       "color": "#d5d4e2",
       "links": [
-        { "name": "Github", "url": "https://github.com" },
+        { "name": "GitHub", "url": "https://github.com" },
         { "name": "Gmail", "url": "http://gmail.com/"}
       ]
     },
