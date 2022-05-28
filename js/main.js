@@ -246,30 +246,27 @@ function parseAndCreate(jsonData) {
     timeZ = jsonData["timeZone"];
     timeZ = isValidTimeZone(timeZ) ? timeZ : undefined;
 
-    // Check if welcome message is supposed to be disabled
-    if (jsonData["disableMessage"]) {
-        document.getElementById(messageDivId).style.display = "none";
+    // Check if welcome message is enabled
+    if (jsonData["enableMessage"]) {
+        document.getElementById(messageDivId).style.display = "";
     }
 
-    if (jsonData["disableDate"]) {
-        // Hide the date and the line
-        document.getElementById(dateId).style.display = "none";
-        document.getElementById(lineId).style.display = "none";
-    } else {
+    if (jsonData["enableDate"]) {
+        // Enable the date and the line
+        document.getElementById(dateId).style.display = "";
+        document.getElementById(lineId).style.display = "";
         updateTimeHook();
     }
 
-    if (jsonData["disableWeather"]) {
+    if (jsonData["enableWeather"]) {
         // Hide the date and the line
-        document.getElementById(weatherId).style.display = "none";
-        document.getElementById(lineId).style.display = "none";
-    } else {
+        document.getElementById(weatherId).style.display = "";
+        document.getElementById(lineId).style.display = "";
         updateWeather(jsonData["weatherConf"]);
     }
     
-    if (jsonData["disableSearchBar"]) {
-        document.getElementById(searchBarDivId).style.display = "none";
-    } else {
+    if (jsonData["enableSearchBar"]) {
+        document.getElementById(searchBarDivId).style.display = "";
         initSearchBar(jsonData);
     }
     
@@ -361,13 +358,13 @@ function createSqr(sqrData, index) {
     div.setAttributeNode(cls)
     div.classList.add("sqr")
 
-    if (colorValid)
+    if (colorValid) {
         customClass = createClass(color);
-    else if (index > bgClassContainer.length - 1)
+    } else if (index > bgClassContainer.length - 1) {
         customClass = 'media';
-    else
+    } else {
         customClass = bgClassContainer[index];
-
+    }
     div.classList.add(customClass);
 
     h4 = getTitle(name, link);

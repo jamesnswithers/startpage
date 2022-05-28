@@ -29,17 +29,17 @@
   "title": "Start Page",
   "searchEngine":"DuckDuckGo",
   "user": "",
-  "disableMessage": true,
-  "disableDate": false,
-  "disableSearchBar": true,
+  "enableMessage": true,
+  "enableDate": false,
+  "enableSearchBar": true,
+  "enableWeather": true,
   "disable24Hour": false,
-  "disableWeather": true,
   "timeZone": "Europe/London",
   "weatherConf": {
     "location": "",
     "unit": "cel"
   },
-  "settingsIcon": false,
+  "settingsIcon": true,
   "style": {
     "backgroundColor": "#212121",
     "messageColor": "#fff",

@@ -68,10 +68,10 @@ async function loadJson(editor) {
 
 function detectBrowser() {
     // Firefox
-    if (typeof InstallTrigger !== 'undefined')
+    if (typeof InstallTrigger !== 'undefined') {
         BROWSER = browser
-    else if (!!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime))
+    } else if (!!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime)) {
         BROWSER = chrome
-
+    }
     return BROWSER;
 };
