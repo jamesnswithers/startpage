@@ -14,8 +14,9 @@ browserExtension = false
 
 // Detect browser
 BROWSER = false
-if (browserExtension)
+if (browserExtension) {
     BROWSER = detectBrowser()
+}
 
 function showSettings() {
     modalEl = document.getElementById(modalId)
