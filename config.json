@@ -1,38 +1,28 @@
 {
   "squares": [
     { "name": "media",
-      "color": "red",
+      "color": "#d5d4e2",
       "links": [
         { "name": "YouTube", "url": "https://youtube.com" },
         { "name": "SoccerStreams", "url": "https://redi1.soccerstreams.net/" },
-        { "name": "BandCamp", "url": "https://bandcamp.com/" }
+        { "name": "BandCamp", "url": "https://bandcamp.com/" },
+        { "name": "Reddit", "url": "https://reddit.com" }
       ]
     },
     { "name": "work",
-      "color": "#26A69A",
+      "color": "#d5d4e2",
       "links": [
         { "name": "Github", "url": "https://github.com" },
-        { "name": "Gmail", "url": "http://gmail.com/"},
-        { "name": "Heroku", "url": "http://heroku.com/" },
-        { "name": "localhost", "url": "http://localhost:8000/" }
+        { "name": "Gmail", "url": "http://gmail.com/"}
       ]
     },
-    { "name": "play",
+    { "name": "News",
+      "color": "#d5d4e2",
       "links": [
-        { "name": "Reddit", "url": "https://reddit.com" },
         { "name": "SkySports", "url": "https://skysports.com/" },
         { "name": "Soccerway", "url": "https://uk.soccerway.com/" },
         { "name": "Formula 1", "url": "https://formula1.com/" },
-        { "name": "TheGuardian", "url": "https://theguardian.co.uk/" }
-      ]
-    },
-    {
-      "name": "others",
-      "links": [
-        {"name": "Material Colors", "url": "http://materialuicolors.co/"},
-        {"name": "Gmail", "url": "http://gmail.com/"},
-        {"name": "neo4j Local", "url": "http://localhost:7474/"},
-        {"name": "rarbg", "url": "http://rarbg.to"}
+        { "name": "The Guardian", "url": "https://theguardian.co.uk/" }
       ]
     }
   ],
