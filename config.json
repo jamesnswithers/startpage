@@ -38,15 +38,15 @@
   ],
   "title": "Start Page",
   "searchEngine":"DuckDuckGo",
-  "user": "James",
-  "disableMessage": false,
+  "user": "",
+  "disableMessage": true,
   "disableDate": false,
-  "disableSearchBar": false,
+  "disableSearchBar": true,
   "disable24Hour": false,
   "disableWeather": true,
   "timeZone": "Europe/London",
   "weatherConf": {
-    "location": "Bexhill GB",
+    "location": "",
     "unit": "cel"
   },
   "settingsIcon": false,
@@ -57,9 +57,9 @@
     "lineColor": "#fff",
     "weatherColor": "#d9d9d9",
     "searchColor": "#fff",
-    "searchBackgroundColor": "#00000099",
+    "searchBackgroundColor": "#000000cc",
     "squareColor": "#9e9e9e",
-    "squareBackgroundColor": "#00000099",
+    "squareBackgroundColor": "#000000cc",
     "autocompleteHighlightBackgroundColor": "#3B3B3B"
   },
   "background": {
