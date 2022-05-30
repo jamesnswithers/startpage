@@ -9,11 +9,20 @@
         { "name": "Reddit", "url": "https://reddit.com" }
       ]
     },
-    { "name": "work",
+    { "name": "personal",
       "color": "#d5d4e2",
       "links": [
         { "name": "GitHub", "url": "https://github.com" },
         { "name": "Gmail", "url": "http://gmail.com/"}
+      ]
+    },
+    { "name": "work",
+      "color": "#d5d4e2",
+      "links": [
+        { "name": "HD GitHub", "url": "https://github.com/HD-IT-Development" },
+        { "name": "Azure DevOps", "url": "https://dev.azure.com/HISL" },
+        { "name": "Azure Portal", "url": "https://portal.azure.com" },
+        { "name": "Octane", "url": "https://almoctane-eur.saas.microfocus.com/ui/?p=146003/1002" }
       ]
     },
     { "name": "news",
