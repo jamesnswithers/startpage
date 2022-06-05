@@ -38,6 +38,7 @@
   "title": "Start Page",
   "searchEngine":"DuckDuckGo",
   "user": "username",
+  "openLinksBackground": true,
   "enableMessage": false,
   "enableDate": false,
   "enableSearchBar": true,

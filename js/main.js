@@ -289,9 +289,9 @@ function parseAndCreate(jsonData) {
     }
 
     sqrs = jsonData["squares"];
-
+    openLinksInBackground = jsonData["openLinksBackground"];
     sqrs.forEach((element, index) => {
-        sqr = createSqr(element, index);
+        sqr = createSqr(element, index, openLinksInBackground);
         document.getElementById(otherContentId).appendChild(sqr);
     })
 
@@ -346,7 +346,7 @@ function parseAndCreate(jsonData) {
     extractQuickLinks(sqrs, jsonData["style"]);
 }
 
-function createSqr(sqrData, index) {
+function createSqr(sqrData, index, openLinksInBackground) {
     // Create a new square division with the passed element
     name = sqrData["name"];
     link = sqrData["url"];
@@ -383,6 +383,10 @@ function createSqr(sqrData, index) {
         attrHref = document.createAttribute("href")
         attrHref.value = aHref
         a.setAttributeNode(attrHref)
+        
+        if (openLinksInBackground) {
+            a.setAttribute("target", "_blank");
+        }
 
         a.textContent = aName
 
