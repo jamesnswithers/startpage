@@ -269,8 +269,10 @@ function parseAndCreate(jsonData) {
         updateWeather(jsonData["weatherConf"]);
     }
     
+    console.log("enableSearchBar=" + jsonData["enableSearchBar"]);
     if (jsonData["enableSearchBar"]) {
         document.getElementById(searchBarDivId).style.display = "";
+        console.log(searchBarDivId + ":" + document.getElementById(searchBarDivId).style.display);
         initSearchBar(jsonData);
     }
     

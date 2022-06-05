@@ -265,3 +265,7 @@ body {
   stroke: white;
   transition: 2s ease-in;
 }
+
+#background-controls a i svg {
+  color: white;
+}
