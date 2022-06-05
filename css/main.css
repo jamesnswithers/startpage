@@ -267,5 +267,11 @@ body {
 }
 
 #background-controls a i svg {
-  color: white;
+  stroke: #607D8B;
+}
+
+#background-controls {
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
 }
