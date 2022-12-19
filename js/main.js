@@ -100,6 +100,8 @@ function initSearchBar(jsonData) {
         query = query.replace(/\ /g, "+")
         document.location = searchUrl + query
     })
+    
+    document.getElementById(searchBarId).focus();
 }
 
 function buildMsg() {
