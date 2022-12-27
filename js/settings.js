@@ -11,12 +11,14 @@ modalId = "settings"
 closeId = "close"
 jsonContainer = "jsoneditor"
 browserExtension = false
+localUserSettingsStore = 'userSettingsStore';
 
 // Detect browser
 BROWSER = false
 if (browserExtension) {
     BROWSER = detectBrowser()
 }
+
 
 function showSettings() {
     modalEl = document.getElementById(modalId)
@@ -50,20 +52,44 @@ function hideSettings(editor) {
     modalEl.style.display = "none"
     // Get the updated JSON
     updatedJson = editor.get()
-    BROWSER.storage.sync.set(updatedJson)
+    if (BROWSER) {
+        BROWSER.storage.sync.set(updatedJson)
+    }
     document.getElementById(jsonContainer).innerHTML = ""
     location.reload()
 }
 
+async function fetchSettings() {
+    if (BROWSER) {
+        BROWSER.storage.sync.get(async result => {
+            if (Object.keys(result).length == 0) {
+                const response = await fetch("config.json")
+                result = await response.json()
+            }
+        })
+    } else {
+        const response = await fetch("/config.json");
+        result = await response.json();
+        //localStorage.setItem(localUserSettingsStore, JSON.stringify({"data": result, "time": new Date()}));
+    }
+    return result;
+};
+
+function saveSettings(settings) {
+    if (debug || !BROWSER) {
+        localStorage.setItem(localUserSettingsStore, JSON.stringify({"data": settings, "time": new Date()}));;
+    }
+
+    if (BROWSER) {
+        BROWSER.storage.sync.set(settings);
+    }
+}
+
 async function loadJson(editor) {
-    BROWSER.storage.sync.get(async result => {
-        if (Object.keys(result).length == 0) {
-            const response = await fetch("config.json")
-            result = await response.json()
-        }
-        // Populate the editor
-        editor.set(result)
-    })
+    result = await fetchSettings();
+    // Populate the editor
+    editor.set(result);
+    return result;
 };
 
 function detectBrowser() {

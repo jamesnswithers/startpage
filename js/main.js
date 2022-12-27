@@ -57,14 +57,16 @@ function initBody() {
      */
     // If running on local, just read the conf
     if (debug || !BROWSER) {
-        readJSON("config.json");
+        loadConfiguration();
         return;
     }
 
     // Read the json file
-    BROWSER.storage.sync.get(result => {
-        Object.keys(result).length == 0 ? readJSON("config.json") : parseAndCreate(result)
-    })
+    if (BROWSER) {
+        BROWSER.storage.sync.get(result => {
+            Object.keys(result).length == 0 ? readJSON("config.json") : parseAndCreate(result)
+        });
+    }
 }
 
 function initSearchBar(jsonData) {
@@ -211,10 +213,11 @@ function readJSON(fileName) {
         })
 }
 
-function saveSettings(settings) {
-    if (debug) return;
-
-    if (BROWSER) BROWSER.storage.sync.set(settings);
+async function loadConfiguration() {
+    // Load the data of the passed file.
+    jsonData = await fetchSettings();
+    parseAndCreate(jsonData);
+    saveSettings(jsonData);
 }
 
 function parseAndCreate(jsonData) {
