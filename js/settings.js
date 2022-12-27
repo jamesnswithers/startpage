@@ -10,13 +10,6 @@
 modalId = "settings"
 closeId = "close"
 jsonContainer = "jsoneditor"
-browserExtension = false
-
-// Detect browser
-BROWSER = false
-if (browserExtension) {
-    BROWSER = detectBrowser()
-}
 
 function showSettings() {
     modalEl = document.getElementById(modalId)
@@ -50,28 +43,9 @@ function hideSettings(editor) {
     modalEl.style.display = "none"
     // Get the updated JSON
     updatedJson = editor.get()
-    BROWSER.storage.sync.set(updatedJson)
     document.getElementById(jsonContainer).innerHTML = ""
     location.reload()
 }
 
 async function loadJson(editor) {
-    BROWSER.storage.sync.get(async result => {
-        if (Object.keys(result).length == 0) {
-            const response = await fetch("config.json")
-            result = await response.json()
-        }
-        // Populate the editor
-        editor.set(result)
-    })
-};
-
-function detectBrowser() {
-    // Firefox
-    if (typeof InstallTrigger !== 'undefined') {
-        BROWSER = browser
-    } else if (!!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime)) {
-        BROWSER = chrome
-    }
-    return BROWSER;
 };
