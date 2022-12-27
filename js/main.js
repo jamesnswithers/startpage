@@ -55,18 +55,8 @@ function initBody() {
      * Do everything like adding an event listener to
      * other things.
      */
-    // If running on local, just read the conf
-    if (debug || !BROWSER) {
-        loadConfiguration();
-        return;
-    }
-
-    // Read the json file
-    if (BROWSER) {
-        BROWSER.storage.sync.get(result => {
-            Object.keys(result).length == 0 ? readJSON("config.json") : parseAndCreate(result)
-        });
-    }
+    readJSON("config.json");
+    return;
 }
 
 function initSearchBar(jsonData) {
