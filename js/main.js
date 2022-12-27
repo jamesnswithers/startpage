@@ -568,11 +568,5 @@ function enableCog() {
     // Add event listener
     settingsCogElement.onclick = function() {
         editor = showSettings()
-
-        // Add an onclick listener to hide settings if the button is clicked
-        // again.
-        settingsCogElement.onclick = () => {
-            hideSettings(editor);
-        }
     }
 }

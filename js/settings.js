@@ -31,7 +31,14 @@ function showSettings() {
         hideSettings(editor);
     }
 
-    return editor
+    settingsCogElement = document.getElementById("settings-cog");
+    // Add an onclick listener to hide settings if the button is clicked
+    // again.
+    settingsCogElement.onclick = () => {
+        hideSettings(editor);
+    }
+
+    return editor;
 }
 
 function hideSettings(editor) {
@@ -44,24 +51,35 @@ function hideSettings(editor) {
      */
     modalEl.style.display = "none"
     // Get the updated JSON
-    updatedJson = editor.get()
-    document.getElementById(jsonContainer).innerHTML = ""
+    updatedJson = editor.get();
+    //document.getElementById(jsonContainer).innerHTML = ""
     //location.reload()
     saveSettings(updatedJson);
+
+    settingsCogElement = document.getElementById("settings-cog");
+    // Add event listener
+    settingsCogElement.onclick = function() {
+        editor = showSettings();
+    }
 }
 
 async function fetchSettings() {
-    const response = await fetch("/config.json");
-    result = await response.json();
-    //localStorage.setItem(localUserSettingsStore, JSON.stringify({"data": result, "time": new Date()}));
+    existingSettings = localStorage.getItem(localUserSettingsStore);
+    if (existingSettings == null) {
+        const response = await fetch("/config.json");
+        result = await response.json();
+    } else {
+        result = JSON.parse(existingSettings).data
+    }
     return result;
 };
 
 function saveSettings(settings) {
     console.log("Saving settings");
-    stringyJsonSettings = JSON.stringify({"data": settings, "time": new Date()})
+    jsonSettings = {"data": settings, "time": new Date()}
+    stringyJsonSettings = JSON.stringify(jsonSettings)
     localStorage.setItem(localUserSettingsStore, stringyJsonSettings);
-    console.log(stringyJsonSettings);
+    console.log(jsonSettings);
 }
 
 async function loadJson(editor) {
