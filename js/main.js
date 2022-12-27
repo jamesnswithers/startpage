@@ -55,7 +55,6 @@ function initBody() {
      * Do everything like adding an event listener to
      * other things.
      */
-    //readJSON("config.json");
     loadConfiguration();
     return;
 }
@@ -191,16 +190,6 @@ function updateWeather(weatherConfig) {
                 getFahrenheit(temp) + "&deg;F" : temp + "&deg;C"
             weatherText = temp + ", " + indexUppercase(weatherType)
             document.getElementById(weatherId).innerHTML = weatherText
-        })
-}
-
-function readJSON(fileName) {
-    // Load the data of the passed file.
-    fetch(fileName)
-        .then(response => {return response.json()})
-        .then(jsonData => {
-            parseAndCreate(jsonData)
-            saveSettings(jsonData)
         })
 }
 
