@@ -55,7 +55,8 @@ function initBody() {
      * Do everything like adding an event listener to
      * other things.
      */
-    readJSON("config.json");
+    //readJSON("config.json");
+    loadConfiguration();
     return;
 }
 

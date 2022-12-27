@@ -10,6 +10,7 @@
 modalId = "settings"
 closeId = "close"
 jsonContainer = "jsoneditor"
+localUserSettingsStore = "userSettingsStore"
 
 
 function showSettings() {
@@ -49,30 +50,18 @@ function hideSettings(editor) {
 }
 
 async function fetchSettings() {
-    if (BROWSER) {
-        BROWSER.storage.sync.get(async result => {
-            if (Object.keys(result).length == 0) {
-                const response = await fetch("config.json")
-                result = await response.json()
-            }
-        })
-    } else {
-        const response = await fetch("/config.json");
-        result = await response.json();
-        //localStorage.setItem(localUserSettingsStore, JSON.stringify({"data": result, "time": new Date()}));
-    }
+    const response = await fetch("/config.json");
+    result = await response.json();
+    //localStorage.setItem(localUserSettingsStore, JSON.stringify({"data": result, "time": new Date()}));
     return result;
 };
 
 function saveSettings(settings) {
-    if (debug || !BROWSER) {
-        localStorage.setItem(localUserSettingsStore, JSON.stringify({"data": settings, "time": new Date()}));;
-    }
-
-    if (BROWSER) {
-        BROWSER.storage.sync.set(settings);
-    }
+    localStorage.setItem(localUserSettingsStore, JSON.stringify({"data": settings, "time": new Date()}));;
 }
 
 async function loadJson(editor) {
+    userSettings = JSON.parse(localStorage.getItem(localUserSettingsStore));
+    // Populate the editor
+    editor.set(userSettings.data);
 };
