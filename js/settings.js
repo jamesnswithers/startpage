@@ -46,7 +46,7 @@ function hideSettings(editor) {
     // Get the updated JSON
     updatedJson = editor.get()
     document.getElementById(jsonContainer).innerHTML = ""
-    location.reload()
+    //location.reload()
 }
 
 async function fetchSettings() {
