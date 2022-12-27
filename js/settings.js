@@ -58,7 +58,10 @@ async function fetchSettings() {
 };
 
 function saveSettings(settings) {
-    localStorage.setItem(localUserSettingsStore, JSON.stringify({"data": settings, "time": new Date()}));;
+    console.log("Saving settings");
+    stringyJsonSettings = JSON.stringify({"data": settings, "time": new Date()})
+    localStorage.setItem(localUserSettingsStore, stringyJsonSettings);
+    console.log(stringyJsonSettings);
 }
 
 async function loadJson(editor) {
