@@ -221,7 +221,6 @@ body {
   z-index: 3;
   width: 80vw;
   height: 80vh;
-  overflow: auto;
   background: #fff;
   color: #212121;
   padding: 15px;
@@ -274,4 +273,17 @@ body {
   position: absolute;
   bottom: 25px;
   left: 25px;
+}
+
+#saveAndClose {
+	border: none;
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px 22px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	margin: 4px 2px;
+	cursor: pointer;
+	float: right;
 }

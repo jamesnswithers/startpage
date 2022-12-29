@@ -9,6 +9,7 @@
 
 modalId = "settings"
 closeId = "close"
+saveButtonId = "saveAndClose"
 jsonContainer = "jsoneditor"
 localUserSettingsStore = "userSettingsStore"
 
@@ -38,10 +39,14 @@ function showSettings() {
         hideSettings(editor);
     }
 
+    document.getElementById(saveButtonId).onclick = () => {
+        saveAndHideSettings(editor);
+    }
+
     return editor;
 }
 
-function hideSettings(editor) {
+function hideSettings() {
     /**
      * Hide the settings.
      * 
@@ -51,16 +56,21 @@ function hideSettings(editor) {
      */
     modalEl.style.display = "none"
     // Get the updated JSON
-    updatedJson = editor.get();
-    //document.getElementById(jsonContainer).innerHTML = ""
+    //updatedJson = editor.get();
+    document.getElementById(jsonContainer).innerHTML = ""
     //location.reload()
-    saveSettings(updatedJson);
+    //saveSettings(updatedJson);
 
     settingsCogElement = document.getElementById("settings-cog");
     // Add event listener
     settingsCogElement.onclick = function() {
         editor = showSettings();
     }
+}
+
+function saveAndHideSettings(editor) {
+    saveSettings(editor.get());
+    hideSettings();
 }
 
 async function fetchSettings() {
