@@ -55,7 +55,7 @@ function initBody() {
      * Do everything like adding an event listener to
      * other things.
      */
-    readJSON("config.json");
+    loadConfiguration();
     return;
 }
 
@@ -193,18 +193,11 @@ function updateWeather(weatherConfig) {
         })
 }
 
-function readJSON(fileName) {
+async function loadConfiguration() {
     // Load the data of the passed file.
-    fetch(fileName)
-        .then(response => {return response.json()})
-        .then(jsonData => {
-            parseAndCreate(jsonData)
-            saveSettings(jsonData)
-        })
-}
-
-function saveSettings(settings) {
-    if (debug) return;
+    jsonData = await fetchSettings();
+    parseAndCreate(jsonData);
+    saveSettings(jsonData);
 }
 
 function parseAndCreate(jsonData) {
@@ -575,11 +568,5 @@ function enableCog() {
     // Add event listener
     settingsCogElement.onclick = function() {
         editor = showSettings()
-
-        // Add an onclick listener to hide settings if the button is clicked
-        // again.
-        settingsCogElement.onclick = () => {
-            hideSettings(editor);
-        }
     }
 }

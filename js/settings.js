@@ -9,7 +9,11 @@
 
 modalId = "settings"
 closeId = "close"
+saveButtonId = "saveAndClose"
+reloadButtonId = "reload"
 jsonContainer = "jsoneditor"
+localUserSettingsStore = "userSettingsStore"
+
 
 function showSettings() {
     modalEl = document.getElementById(modalId)
@@ -29,10 +33,27 @@ function showSettings() {
         hideSettings(editor);
     }
 
-    return editor
+    settingsCogElement = document.getElementById("settings-cog");
+    // Add an onclick listener to hide settings if the button is clicked
+    // again.
+    settingsCogElement.onclick = () => {
+        hideSettings(editor);
+    }
+
+    document.getElementById(saveButtonId).onclick = () => {
+        saveAndHideSettings(editor);
+    }
+
+    document.getElementById(reloadButtonId).onclick = async () => {
+        deleteCachedSettings();
+        await fetchSettings();
+        loadJson(editor);
+    }
+
+    return editor;
 }
 
-function hideSettings(editor) {
+function hideSettings() {
     /**
      * Hide the settings.
      * 
@@ -42,10 +63,51 @@ function hideSettings(editor) {
      */
     modalEl.style.display = "none"
     // Get the updated JSON
-    updatedJson = editor.get()
+    //updatedJson = editor.get();
     document.getElementById(jsonContainer).innerHTML = ""
-    location.reload()
+    //location.reload()
+    //saveSettings(updatedJson);
+
+    settingsCogElement = document.getElementById("settings-cog");
+    // Add event listener
+    settingsCogElement.onclick = function() {
+        editor = showSettings();
+    }
+}
+
+function saveAndHideSettings(editor) {
+    saveSettings(editor.get());
+    hideSettings();
+}
+
+async function fetchSettings() {
+    existingSettings = localStorage.getItem(localUserSettingsStore);
+    if (existingSettings == null) {
+        const response = await fetch("/config.json");
+        result = await response.json();
+        await saveSettings(result);
+    } else {
+        result = JSON.parse(existingSettings).data
+    }
+    return result;
+};
+
+function deleteCachedSettings() {
+    console.log("Removing settings");
+    localStorage.removeItem(localUserSettingsStore);
+    console.log("Settings removed");
+}
+
+async function saveSettings(settings) {
+    console.log("Saving settings");
+    jsonSettings = {"data": settings, "time": new Date()}
+    stringyJsonSettings = JSON.stringify(jsonSettings)
+    localStorage.setItem(localUserSettingsStore, stringyJsonSettings);
+    console.log(jsonSettings);
 }
 
 async function loadJson(editor) {
+    userSettings = JSON.parse(localStorage.getItem(localUserSettingsStore));
+    // Populate the editor
+    editor.set(userSettings.data);
 };
