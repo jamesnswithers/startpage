@@ -10,6 +10,7 @@
 modalId = "settings"
 closeId = "close"
 saveButtonId = "saveAndClose"
+reloadButtonId = "reload"
 jsonContainer = "jsoneditor"
 localUserSettingsStore = "userSettingsStore"
 
@@ -41,6 +42,12 @@ function showSettings() {
 
     document.getElementById(saveButtonId).onclick = () => {
         saveAndHideSettings(editor);
+    }
+
+    document.getElementById(reloadButtonId).onclick = async () => {
+        deleteCachedSettings();
+        await fetchSettings();
+        loadJson(editor);
     }
 
     return editor;
@@ -78,13 +85,20 @@ async function fetchSettings() {
     if (existingSettings == null) {
         const response = await fetch("/config.json");
         result = await response.json();
+        await saveSettings(result);
     } else {
         result = JSON.parse(existingSettings).data
     }
     return result;
 };
 
-function saveSettings(settings) {
+function deleteCachedSettings() {
+    console.log("Removing settings");
+    localStorage.removeItem(localUserSettingsStore);
+    console.log("Settings removed");
+}
+
+async function saveSettings(settings) {
     console.log("Saving settings");
     jsonSettings = {"data": settings, "time": new Date()}
     stringyJsonSettings = JSON.stringify(jsonSettings)

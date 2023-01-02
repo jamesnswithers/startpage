@@ -275,15 +275,28 @@ body {
   left: 25px;
 }
 
+#reload {
+  border: none;
+  background-color: #af4ca0;
+  color: white;
+  padding: 10px 22px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  float: left;
+}
+
 #saveAndClose {
-	border: none;
-	background-color: #4CAF50;
-	color: white;
-	padding: 10px 22px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	margin: 4px 2px;
-	cursor: pointer;
-	float: right;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 22px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  float: right;
 }
