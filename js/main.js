@@ -379,23 +379,36 @@ function createSqr(sqrData, index, openLinksInBackground) {
     return div
 }
 
-function loadBackgroundImage(settings) {
+async function loadBackgroundImage(settings) {
     if (settings["background"]["picsum"]) {
-        if (!document.getRootNode().body.dataset.picsumBackgroundCount) {
-            document.getRootNode().body.dataset.picsumBackgroundCount = 0;
-        }
-        picsumUrl = "https://picsum.photos/";
-        picsumUrl += window.screen.availWidth + '/' + window.screen.availHeight + '/';
-        if (jsonData["background"]["picsum"]["blur"]) {
-            picsumUrl += "?blur";
-        }
-        if (jsonData["background"]["picsum"]["blurStrength"]) {
+        enableBlur = jsonData["background"]["picsum"]["blur"];
+        blurStrength = jsonData["background"]["picsum"]["blurStrength"];
+        
+        randomPicsumUrl = await generatePicsumUrl(null, enableBlur, blurStrength);
+        picsumId = await getPicsumId(randomPicsumUrl);
+        picsumUrl = await generatePicsumUrl(picsumId, enableBlur, blurStrength)
+        document.getRootNode().body.style.backgroundImage = 'url("' + picsumUrl + '")';
+        document.getRootNode().body.dataset.picsumId = picsumId;
+    }
+}
+
+async function generatePicsumUrl(picsumId, enableBlur, blurStrength) {
+    picsumUrl = "https://picsum.photos";
+    if (picsumId) {
+        picsumUrl += '/id/'+ picsumId
+    }
+    picsumUrl += '/' + window.screen.availWidth + '/' + window.screen.availHeight + '/';
+    if (enableBlur) {
+        picsumUrl += "?blur";
+        if (blurStrength) {
             picsumUrl += "=" + jsonData["background"]["picsum"]["blurStrength"];
         }
-        picsumUrl += ("?v=" + document.getRootNode().body.dataset.picsumBackgroundCount);
-        document.getRootNode().body.style.backgroundImage = 'url("' + picsumUrl + '")';
-        document.getRootNode().body.dataset.picsumBackgroundCount++;
     }
+    return picsumUrl;
+}
+
+async function getPicsumId(url) {
+    return (await fetch(url)).headers.get('picsum-id');
 }
 
 function getTitle(titleContent, linkHref=null) {
