@@ -267,6 +267,7 @@ body {
 
 #background-controls a i svg {
   stroke: #607D8B;
+  cursor: pointer;
 }
 
 #background-controls {
