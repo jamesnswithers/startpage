@@ -1,54 +1,55 @@
 {
   "squares": [
     { "name": "media",
-      "color": "red",
+      "color": "#d5d4e2",
       "links": [
-        { "name": "Spotify", "url": "https://open.spotify.com/" },
-        { "name": "YoutubeMusic", "url": "https://music.youtube.com/" },
-        { "name": "Netflix", "url": "https://netflix.com" },
-        { "name": "Youtube", "url": "https://youtube.com" }
+        { "name": "YouTube", "url": "https://youtube.com" },
+        { "name": "SoccerStreams", "url": "https://soccerstreams.football/" },
+        { "name": "BandCamp", "url": "https://bandcamp.com/" },
+        { "name": "Reddit", "url": "https://reddit.com" }
+      ]
+    },
+    { "name": "personal",
+      "color": "#d5d4e2",
+      "links": [
+        { "name": "GitHub", "url": "https://github.com" },
+        { "name": "Gmail", "url": "http://gmail.com/"}
       ]
     },
     { "name": "work",
-      "color": "#26A69A",
+      "color": "#d5d4e2",
       "links": [
-        { "name": "Github", "url": "https://github.com" },
-        { "name": "Heroku", "url": "http://heroku.com/" },
-        { "name": "localhost", "url": "http://localhost:8000/" }
+        { "name": "HD GitHub", "url": "https://github.com/HD-IT-Development" },
+        { "name": "Azure DevOps", "url": "https://dev.azure.com/HISL" },
+        { "name": "Azure Portal", "url": "https://portal.azure.com" },
+        { "name": "Octane", "url": "https://almoctane-eur.saas.microfocus.com/ui/?p=146003/1002" }
       ]
     },
-    { "name": "social",
+    { "name": "news",
+      "color": "#d5d4e2",
       "links": [
-        { "name": "Reddit", "url": "https://reddit.com" },
-        { "name": "Unixporn Love", "url": "https://deepjyoti30.github.io/unixporn-love/" },
-        { "name": "r/unixporn", "url": "https://www.reddit.com/r/unixporn/" },
-        { "name": "r/mk", "url": "https://www.reddit.com/r/MechanicalKeyboards/" }
-      ]
-    },
-    {
-      "name": "Others",
-      "links": [
-        {"name": "Material Colors", "url": "http://materialuicolors.co/"},
-        {"name": "Gmail", "url": "http://gmail.com/"},
-        {"name": "neo4j Local", "url": "http://localhost:7474/"},
-        {"name": "rarbg", "url": "http://rarbg.to"}
+        { "name": "SkySports", "url": "https://skysports.com/" },
+        { "name": "Soccerway", "url": "https://uk.soccerway.com/" },
+        { "name": "Formula 1", "url": "https://formula1.com/" },
+        { "name": "The Guardian", "url": "https://theguardian.co.uk/" }
       ]
     }
   ],
-  "title": "startpage",
+  "title": "Start Page",
   "searchEngine":"DuckDuckGo",
-  "user": "Deepjyoti",
-  "disableMessage": false,
-  "disableDate": false,
-  "disableSearchBar": false,
+  "user": "username",
+  "openLinksBackground": true,
+  "enableMessage": false,
+  "enableDate": false,
+  "enableSearchBar": true,
+  "enableWeather": false,
   "disable24Hour": false,
-  "disableWeather": true,
-  "timeZone": "America/Los_Angeles",
+  "timeZone": "Europe/London",
   "weatherConf": {
-    "location": "Pune India",
+    "location": "",
     "unit": "cel"
   },
-  "settingsIcon": false,
+  "settingsIcon": true,
   "style": {
     "backgroundColor": "#212121",
     "messageColor": "#fff",
@@ -56,14 +57,31 @@
     "lineColor": "#fff",
     "weatherColor": "#d9d9d9",
     "searchColor": "#fff",
-    "searchBackgroundColor": "#2e2e2e",
+    "searchBackgroundColor": "#000000cc",
     "squareColor": "#9e9e9e",
-    "squareBackgroundColor": "#2e2e2e",
+    "squareBackgroundColor": "#000000cc",
     "autocompleteHighlightBackgroundColor": "#3B3B3B"
+  },
+  "background": {
+    "picsum": {
+      "blur": false,
+      "blurStrength": 0
+    }
   },
   "quickLinks": {
     "r": "https://reddit.com",
     "g": "https://github.com",
-    "y": "https://youtube.com"
+    "y": "https://youtube.com",
+    "d": {
+      "URL": "https://duckduckgo.com",
+      "Search": "/?q="
+    },
+    "b": "https://bing.com",
+    "p": "https://startpage.com",
+    "s": "https://stackoverflow.com",
+    "w": {
+      "URL":"https://wikipedia.org/wiki",
+      "Search": "/Special:Search?search="
+    }
   }
 }

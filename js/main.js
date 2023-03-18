@@ -6,10 +6,17 @@ window.onload = function() {
 
 
 debug = false; // Enable while testing on local
-searchBarDivId = "search-bar"
+searchBarDivId = "search-bar-container"
 searchBarId = "search-bar-input"
 messageDivId = "message"
-dateDivId = "date"
+
+mainContentId = "main"
+
+backgroundNavHideId = "background-nav-hide"
+backgroundNavPrevId = "background-nav-prev"
+backgroundNavNextId = "background-nav-next"
+
+dateWeatherDivId = "date-weather"
 dateId = "date-text"
 weatherId = "weather-text"
 lineId = "line"
@@ -18,8 +25,8 @@ timeZ = undefined
 otherContentId = "other-content"
 userName = ""
 disable24Hour = false;
-appId = "fd2c04ed7f9802656bd2cc23bddc7ad9"
-apiUrl = "http://api.openweathermap.org/data/2.5/weather"
+weatherAppId = ""
+weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather"
 bgClassContainer = [
     "media",
     "work",
@@ -36,7 +43,11 @@ searchEngines = {
     "DuckDuckGo": "https://duckduckgo.com/?q=",
     "Bing": "https://www.bing.com/search?q=",
     "Yahoo": "https://search.yahoo.com/search?p=",
-    "Ecosia": "https://www.ecosia.org/search?q="
+    "Ecosia": "https://www.ecosia.org/search?q=",
+    "Startpage": "https://startpage.com/do/search?query=",
+    "Yandex": "https://yandex.com/search/?text=",
+    "Qwant": "https://www.qwant.com/?q=",
+    "Baidu": "https://www.baidu.com/s?wd="
 }
 validWeatherUnit = [
     "fah", "cel"
@@ -51,16 +62,9 @@ function initBody() {
      * Do everything like adding an event listener to
      * other things.
      */
-    // If running on local, just read the conf
-    if (debug) {
-        readJSON("config.json");
-        return;
-    }
-
-    // Read the json file
-    BROWSER.storage.sync.get(result => {
-        Object.keys(result).length == 0 ? readJSON("config.json") : parseAndCreate(result)
-    })
+    loadConfiguration();
+    setupBackgroundNavigationControls();
+    return;
 }
 
 function initSearchBar(jsonData) {
@@ -68,7 +72,7 @@ function initSearchBar(jsonData) {
     document.getElementById(searchBarId).value = ""
     document.getElementById(searchBarId).focus()
     searchEngine = jsonData["searchEngine"]
-    if(!Object.keys(this.searchEngines).includes(searchEngine)){
+    if (!Object.keys(this.searchEngines).includes(searchEngine)) {
         searchEngine = "Google"
     }
     searchUrl = this.searchEngines[searchEngine]
@@ -96,6 +100,8 @@ function initSearchBar(jsonData) {
         query = query.replace(/\ /g, "+")
         document.location = searchUrl + query
     })
+    
+    document.getElementById(searchBarId).focus();
 }
 
 function buildMsg() {
@@ -180,7 +186,7 @@ function updateWeather(weatherConfig) {
     unit = validWeatherUnit.includes(passedUnit.substring(0, 3)) ?
         passedUnit : "cel"
 
-    fetchUrl = apiUrl + `?q=${userLocation}&appid=${appId}&units=metric`
+    fetchUrl = weatherApiUrl + `?q=${userLocation}&appid=${weatherAppId}&units=metric`
 
     fetch(fetchUrl)
         .then(response => {return response.json()})
@@ -195,100 +201,107 @@ function updateWeather(weatherConfig) {
         })
 }
 
-function readJSON(fileName) {
+async function loadConfiguration() {
     // Load the data of the passed file.
-    fetch(fileName)
-        .then(response => {return response.json()})
-        .then(jsonData => {
-            parseAndCreate(jsonData)
-            saveSettings(jsonData)
-        })
-}
-
-function saveSettings(settings) {
-    if (debug) return;
-
-    BROWSER.storage.sync.set(settings)
+    jsonData = await fetchSettings();
+    parseAndCreate(jsonData);
+    saveSettings(jsonData);
 }
 
 function parseAndCreate(jsonData) {
     /**
      * Parse the passed jsonData and create div's accordingly.
      */
-    this.userName = jsonData["user"]
+    this.userName = jsonData["user"];
 
     // Enable the settings button if it is enabled
-    if (jsonData["settingsIcon"]) enableCog();
+    if (jsonData["settingsIcon"]) {
+        enableCog();
+    }
 
     // Set the page title if it is passed by the user
-    if (jsonData["title"]) document.title = jsonData["title"]
+    if (jsonData["title"]) {
+        document.title = jsonData["title"];
+    }
 
     // If the user has not passed any custom message
     if (Object.keys(jsonData).includes("message") &&
             typeof(jsonData["message"]) == "string" &&
-            jsonData["message"] != "")
-        builtMsg = jsonData["message"]
-    else
+            jsonData["message"] != "") {
+        builtMsg = jsonData["message"];
+    } else {
         builtMsg = this.handleMessage(this.userName);
+    }
+    document.getElementById(messageId).textContent = builtMsg;
 
-    document.getElementById(messageId).textContent = builtMsg
     // Check if 24 hour is disabled
-    disable24Hour = jsonData["disable24Hour"]
-    timeZ = jsonData["timeZone"]
-    timeZ = isValidTimeZone(timeZ) ? timeZ : undefined
-    // Check if welcome message is supposed to be disabled
-    if (jsonData["disableMessage"])
-        document.getElementById(messageDivId).style.display = "none"
-    if (jsonData["disableDate"]) {
-        // Hide the date and the line
-        document.getElementById(dateId).style.display = "none"
-        document.getElementById(lineId).style.display = "none"
-    }
-    else
-        updateTimeHook()
-    if (jsonData["disableWeather"]){
-        // Hide the date and the line
-        document.getElementById(weatherId).style.display = "none"
-        document.getElementById(lineId).style.display = "none"
-    }
-    else
-        updateWeather(jsonData["weatherConf"])
-    if (jsonData["disableSearchBar"])
-        document.getElementById(searchBarDivId).style.display = "none"
-    else
-        initSearchBar(jsonData)
+    disable24Hour = jsonData["disable24Hour"];
+    timeZ = jsonData["timeZone"];
+    timeZ = isValidTimeZone(timeZ) ? timeZ : undefined;
 
-    sqrs = jsonData["squares"]
+    // Check if welcome message is enabled
+    if (jsonData["enableMessage"]) {
+        document.getElementById(messageDivId).style.display = "";
+    }
 
+    if (jsonData["enableDate"]) {
+        // Enable the date and the line
+        document.getElementById(dateWeatherDivId).style.display = "";
+        document.getElementById(dateId).style.display = "";
+        updateTimeHook();
+    }
+
+    if (jsonData["enableDate"] && jsonData["enableWeather"]) {
+        document.getElementById(lineId).style.display = "";
+    }
+
+    if (jsonData["enableWeather"]) {
+        // Hide the date and the line
+        document.getElementById(dateWeatherDivId).style.display = "";
+        document.getElementById(weatherId).style.display = "";
+        updateWeather(jsonData["weatherConf"]);
+    }
+    
+    if (jsonData["enableSearchBar"]) {
+        document.getElementById(searchBarDivId).style.display = "initial";
+        initSearchBar(jsonData);
+    }
+    
+    if (jsonData["background"]) {
+        loadBackgroundImage(jsonData);
+    }
+
+    sqrs = jsonData["squares"];
+    openLinksInBackground = jsonData["openLinksBackground"];
     sqrs.forEach((element, index) => {
-        sqr = createSqr(element, index)
-        document.getElementById(otherContentId).appendChild(sqr)
+        sqr = createSqr(element, index, openLinksInBackground);
+        document.getElementById(otherContentId).appendChild(sqr);
     })
 
     // Apply styling if present
     if (jsonData["style"]) {
-        styleData = jsonData["style"]
+        styleData = jsonData["style"];
         if (styleData["backgroundColor"]) {
-            document.body.style.backgroundColor = styleData["backgroundColor"]
+            document.body.style.backgroundColor = styleData["backgroundColor"];
         }
         if (styleData["messageColor"]) {
-            document.getElementById(messageId).style.color = styleData["messageColor"]
+            document.getElementById(messageId).style.color = styleData["messageColor"];
         }
         if (styleData["dateColor"]) {
-            document.getElementById(dateId).style.color = styleData["dateColor"]
+            document.getElementById(dateId).style.color = styleData["dateColor"];
         }
         if (styleData["lineColor"]) {
-            document.getElementById(lineId).style.color = styleData["lineColor"]
+            document.getElementById(lineId).style.color = styleData["lineColor"];
         }
         if (styleData["weatherColor"]) {
-            document.getElementById(weatherId).style.color = styleData["weatherColor"]
+            document.getElementById(weatherId).style.color = styleData["weatherColor"];
         }
         if (styleData["searchColor"]) {
-            document.getElementById(searchBarId).style.color = styleData["searchColor"]
+            document.getElementById(searchBarId).style.color = styleData["searchColor"];
         }
         if (styleData["searchBackgroundColor"]) {
-            document.getElementById(searchBarId).style.backgroundColor = styleData["searchBackgroundColor"]
-            autocompleteBackgroundColor = styleData["searchBackgroundColor"]
+            document.getElementById(searchBarId).style.backgroundColor = styleData["searchBackgroundColor"];
+            autocompleteBackgroundColor = styleData["searchBackgroundColor"];
         }
         if (styleData["searchPlaceholderColor"]) {
             document.getElementById(searchBarId).classList.add(createPlaceholderStyleClass(styleData["searchPlaceholderColor"]));
@@ -297,17 +310,17 @@ function parseAndCreate(jsonData) {
             addAutocompleteStyleClass(styleData["autocompleteHighlightBackgroundColor"]);
         }
         if (styleData["squareBackgroundColor"]) {
-            elements = document.getElementsByClassName("sqr")
+            elements = document.getElementsByClassName("sqr");
             var i;
             for (i = 0; i < elements.length; i++) {
-                elements[i].style.backgroundColor = styleData["squareBackgroundColor"]
+                elements[i].style.backgroundColor = styleData["squareBackgroundColor"];
             }
         }
         if (styleData["squareColor"]) {
-            elements = document.querySelectorAll(".sqr a")
+            elements = document.querySelectorAll(".sqr a");
             var i;
             for (i = 0; i < elements.length; i++) {
-                elements[i].style.color = styleData["squareColor"]
+                elements[i].style.color = styleData["squareColor"];
             }
         }
     }
@@ -316,7 +329,7 @@ function parseAndCreate(jsonData) {
     extractQuickLinks(sqrs, jsonData["style"]);
 }
 
-function createSqr(sqrData, index) {
+function createSqr(sqrData, index, openLinksInBackground) {
     // Create a new square division with the passed element
     name = sqrData["name"];
     link = sqrData["url"];
@@ -332,13 +345,13 @@ function createSqr(sqrData, index) {
     div.setAttributeNode(cls)
     div.classList.add("sqr")
 
-    if (colorValid)
+    if (colorValid) {
         customClass = createClass(color);
-    else if (index > bgClassContainer.length - 1)
+    } else if (index > bgClassContainer.length - 1) {
         customClass = 'media';
-    else
+    } else {
         customClass = bgClassContainer[index];
-
+    }
     div.classList.add(customClass);
 
     h4 = getTitle(name, link);
@@ -353,6 +366,10 @@ function createSqr(sqrData, index) {
         attrHref = document.createAttribute("href")
         attrHref.value = aHref
         a.setAttributeNode(attrHref)
+        
+        if (openLinksInBackground) {
+            a.setAttribute("target", "_blank");
+        }
 
         a.textContent = aName
 
@@ -360,6 +377,25 @@ function createSqr(sqrData, index) {
     })
 
     return div
+}
+
+function loadBackgroundImage(settings) {
+    if (settings["background"]["picsum"]) {
+        if (!document.getRootNode().body.dataset.picsumBackgroundCount) {
+            document.getRootNode().body.dataset.picsumBackgroundCount = 0;
+        }
+        picsumUrl = "https://picsum.photos/";
+        picsumUrl += window.screen.availWidth + '/' + window.screen.availHeight + '/';
+        if (jsonData["background"]["picsum"]["blur"]) {
+            picsumUrl += "?blur";
+        }
+        if (jsonData["background"]["picsum"]["blurStrength"]) {
+            picsumUrl += "=" + jsonData["background"]["picsum"]["blurStrength"];
+        }
+        picsumUrl += ("?v=" + document.getRootNode().body.dataset.picsumBackgroundCount);
+        document.getRootNode().body.style.backgroundImage = 'url("' + picsumUrl + '")';
+        document.getRootNode().body.dataset.picsumBackgroundCount++;
+    }
 }
 
 function getTitle(titleContent, linkHref=null) {
@@ -529,6 +565,27 @@ function listenForSettings() {
     }
 }
 
+// setup background control functions
+
+function setupBackgroundNavigationControls() {
+    backgroundNavHideElt = document.getElementById(backgroundNavHideId);
+    backgroundNavNextElt = document.getElementById(backgroundNavNextId);
+    backgroundNavPrevElt = document.getElementById(backgroundNavPrevId);
+    backgroundNavHideElt.onclick = function() {
+        if (this.dataset.hideControls == 'true') {
+            document.getElementById(mainContentId).hidden = false;
+            this.dataset.hideControls = false;
+        } else {
+            document.getElementById(mainContentId).hidden = true;
+            this.dataset.hideControls = true;
+        };
+    };
+    backgroundNavNextElt.onclick = async function() {
+        settings = await fetchSettings();
+        loadBackgroundImage(settings);
+    };
+}
+
 // Handle the settings cog
 
 function enableCog() {
@@ -549,11 +606,5 @@ function enableCog() {
     // Add event listener
     settingsCogElement.onclick = function() {
         editor = showSettings()
-
-        // Add an onclick listener to hide settings if the button is clicked
-        // again.
-        settingsCogElement.onclick = () => {
-            hideSettings(editor);
-        }
     }
 }
