@@ -586,10 +586,12 @@ function setupBackgroundNavigationControls() {
     backgroundNavPrevElt = document.getElementById(backgroundNavPrevId);
     backgroundNavHideElt.onclick = function() {
         if (this.dataset.hideControls == 'true') {
+            this.setAttribute('fill', this.getAttribute('stroke'));
             document.getElementById(mainContentId).hidden = false;
             this.dataset.hideControls = false;
         } else {
             document.getElementById(mainContentId).hidden = true;
+            this.setAttribute('fill', 'none');
             this.dataset.hideControls = true;
         };
     };
