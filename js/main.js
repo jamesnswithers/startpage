@@ -9,6 +9,13 @@ debug = false; // Enable while testing on local
 searchBarDivId = "search-bar-container"
 searchBarId = "search-bar-input"
 messageDivId = "message"
+
+mainContentId = "main"
+
+backgroundNavHideId = "background-nav-hide"
+backgroundNavPrevId = "background-nav-prev"
+backgroundNavNextId = "background-nav-next"
+
 dateWeatherDivId = "date-weather"
 dateId = "date-text"
 weatherId = "weather-text"
@@ -56,6 +63,7 @@ function initBody() {
      * other things.
      */
     loadConfiguration();
+    setupBackgroundNavigationControls();
     return;
 }
 
@@ -260,17 +268,7 @@ function parseAndCreate(jsonData) {
     }
     
     if (jsonData["background"]) {
-        if (jsonData["background"]["picsum"]) {
-            picsumUrl = "https://picsum.photos/";
-            picsumUrl += window.screen.availWidth + '/' + window.screen.availHeight + '/';
-            if (jsonData["background"]["picsum"]["blur"]) {
-                picsumUrl += "?blur";
-            }
-            if (jsonData["background"]["picsum"]["blurStrength"]) {
-                picsumUrl += "=" + jsonData["background"]["picsum"]["blurStrength"];
-            }
-            document.getRootNode().body.style.backgroundImage = 'url("' + picsumUrl + '")';
-        }
+        loadBackgroundImage(jsonData);
     }
 
     sqrs = jsonData["squares"];
@@ -379,6 +377,25 @@ function createSqr(sqrData, index, openLinksInBackground) {
     })
 
     return div
+}
+
+function loadBackgroundImage(settings) {
+    if (settings["background"]["picsum"]) {
+        if (!document.getRootNode().body.dataset.picsumBackgroundCount) {
+            document.getRootNode().body.dataset.picsumBackgroundCount = 0;
+        }
+        picsumUrl = "https://picsum.photos/";
+        picsumUrl += window.screen.availWidth + '/' + window.screen.availHeight + '/';
+        if (jsonData["background"]["picsum"]["blur"]) {
+            picsumUrl += "?blur";
+        }
+        if (jsonData["background"]["picsum"]["blurStrength"]) {
+            picsumUrl += "=" + jsonData["background"]["picsum"]["blurStrength"];
+        }
+        picsumUrl += ("?v=" + document.getRootNode().body.dataset.picsumBackgroundCount);
+        document.getRootNode().body.style.backgroundImage = 'url("' + picsumUrl + '")';
+        document.getRootNode().body.dataset.picsumBackgroundCount++;
+    }
 }
 
 function getTitle(titleContent, linkHref=null) {
@@ -546,6 +563,27 @@ function listenForSettings() {
         if (event.ctrlKey && event.which == 188)
             showSettings();
     }
+}
+
+// setup background control functions
+
+function setupBackgroundNavigationControls() {
+    backgroundNavHideElt = document.getElementById(backgroundNavHideId);
+    backgroundNavNextElt = document.getElementById(backgroundNavNextId);
+    backgroundNavPrevElt = document.getElementById(backgroundNavPrevId);
+    backgroundNavHideElt.onclick = function() {
+        if (this.dataset.hideControls == 'true') {
+            document.getElementById(mainContentId).hidden = false;
+            this.dataset.hideControls = false;
+        } else {
+            document.getElementById(mainContentId).hidden = true;
+            this.dataset.hideControls = true;
+        };
+    };
+    backgroundNavNextElt.onclick = async function() {
+        settings = await fetchSettings();
+        loadBackgroundImage(settings);
+    };
 }
 
 // Handle the settings cog
