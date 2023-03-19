@@ -383,12 +383,23 @@ async function loadBackgroundImage(settings) {
     if (settings["background"]["picsum"]) {
         enableBlur = jsonData["background"]["picsum"]["blur"];
         blurStrength = jsonData["background"]["picsum"]["blurStrength"];
+        fromFavourites = jsonData["background"]["picsum"]["fromFavourites"];
+        favourites = jsonData["background"]["picsum"]["favourites"];
         
-        randomPicsumUrl = await generatePicsumUrl(null, enableBlur, blurStrength);
-        picsumId = await getPicsumId(randomPicsumUrl);
+        if (fromFavourites && favourites.length > 0) {
+            picsumId = favourites[Math.floor(Math.random() * favourites.length)];
+        } else {
+            randomPicsumUrl = await generatePicsumUrl(null, enableBlur, blurStrength);
+            picsumId = await getPicsumId(randomPicsumUrl);
+        }
         picsumUrl = await generatePicsumUrl(picsumId, enableBlur, blurStrength)
         document.getRootNode().body.style.backgroundImage = 'url("' + picsumUrl + '")';
         document.getRootNode().body.dataset.picsumId = picsumId;
+
+        if (jsonData["background"]["picsum"]["favourites"].includes(picsumId)) {
+            document.getElementById(backgroundNavLikeId).classList.add('fa-solid');
+            document.getElementById(backgroundNavLikeId).classList.remove('fa-regular');
+        }
     }
 }
 
@@ -409,6 +420,19 @@ async function generatePicsumUrl(picsumId, enableBlur, blurStrength) {
 
 async function getPicsumId(url) {
     return (await fetch(url)).headers.get('picsum-id');
+}
+
+async function picsumSaveFavourite() {
+    settings = await fetchSettings();
+    if (!settings['background']['picsum']['favourites']) {
+        settings['background']['picsum']['favourites'] = [];
+    }
+    if (!settings['background']['picsum']['favourites'].includes(picsumId)) {
+        settings["background"]["picsum"]['favourites'].push(picsumId);
+    } else {
+        settings["background"]["picsum"]['favourites'] = settings["background"]["picsum"]['favourites'].filter(item => item !== picsumId);
+    }
+    saveSettings(settings);
 }
 
 function getTitle(titleContent, linkHref=null) {
@@ -594,9 +618,10 @@ function setupBackgroundNavigationControls() {
         loadBackgroundImage(settings);
     };
     backgroundNavLikeElt.onclick = async function() {
-        document.body.dataset.picsumId;
+        picsumId = document.body.dataset.picsumId;
         this.classList.toggle('fa-solid');
         this.classList.toggle('fa-regular');
+        picsumSaveFavourite(picsumId);
     };
 }
 

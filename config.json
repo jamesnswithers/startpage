@@ -65,7 +65,8 @@
   "background": {
     "picsum": {
       "blur": false,
-      "blurStrength": 0
+      "blurStrength": 0,
+      "fromFavourites": false
     }
   },
   "quickLinks": {
