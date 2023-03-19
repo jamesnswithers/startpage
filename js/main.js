@@ -379,14 +379,14 @@ function createSqr(sqrData, index, openLinksInBackground) {
     return div
 }
 
-async function loadBackgroundImage(settings) {
+async function loadBackgroundImage(settings, forceRandom=false) {
     if (settings["background"]["picsum"]) {
         enableBlur = jsonData["background"]["picsum"]["blur"];
         blurStrength = jsonData["background"]["picsum"]["blurStrength"];
         fromFavourites = jsonData["background"]["picsum"]["fromFavourites"];
         favourites = jsonData["background"]["picsum"]["favourites"];
         
-        if (fromFavourites && favourites.length > 0) {
+        if (fromFavourites && favourites.length > 0 && !forceRandom) {
             picsumId = favourites[Math.floor(Math.random() * favourites.length)];
         } else {
             randomPicsumUrl = await generatePicsumUrl(null, enableBlur, blurStrength);
@@ -399,6 +399,9 @@ async function loadBackgroundImage(settings) {
         if (jsonData["background"]["picsum"]["favourites"].includes(picsumId)) {
             document.getElementById(backgroundNavLikeId).classList.add('fa-solid');
             document.getElementById(backgroundNavLikeId).classList.remove('fa-regular');
+        } else {
+            document.getElementById(backgroundNavLikeId).classList.add('fa-regular');
+            document.getElementById(backgroundNavLikeId).classList.remove('fa-solid');
         }
     }
 }
@@ -615,7 +618,7 @@ function setupBackgroundNavigationControls() {
     };
     backgroundNavNextElt.onclick = async function() {
         settings = await fetchSettings();
-        loadBackgroundImage(settings);
+        loadBackgroundImage(settings, forceRandom=true);
     };
     backgroundNavLikeElt.onclick = async function() {
         picsumId = document.body.dataset.picsumId;
