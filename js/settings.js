@@ -83,7 +83,7 @@ function saveAndHideSettings(editor) {
 async function fetchSettings() {
     existingSettings = localStorage.getItem(localUserSettingsStore);
     if (existingSettings == null) {
-        const response = await fetch(window.location + "/config.json");
+        const response = await fetch(window.location.toString().replace(/\/$/g, "") + "/config.json");
         result = await response.json();
         await saveSettings(result);
     } else {
