@@ -13,7 +13,7 @@ messageDivId = "message"
 mainContentId = "main"
 
 backgroundNavHideId = "background-nav-hide"
-backgroundNavPrevId = "background-nav-prev"
+backgroundNavLikeId = "background-nav-like"
 backgroundNavNextId = "background-nav-next"
 
 dateWeatherDivId = "date-weather"
@@ -583,21 +583,20 @@ function listenForSettings() {
 function setupBackgroundNavigationControls() {
     backgroundNavHideElt = document.getElementById(backgroundNavHideId);
     backgroundNavNextElt = document.getElementById(backgroundNavNextId);
-    backgroundNavPrevElt = document.getElementById(backgroundNavPrevId);
+    backgroundNavLikeElt = document.getElementById(backgroundNavLikeId);
     backgroundNavHideElt.onclick = function() {
-        if (this.dataset.hideControls == 'true') {
-            this.setAttribute('fill', this.getAttribute('stroke'));
-            document.getElementById(mainContentId).hidden = false;
-            this.dataset.hideControls = false;
-        } else {
-            document.getElementById(mainContentId).hidden = true;
-            this.setAttribute('fill', 'none');
-            this.dataset.hideControls = true;
-        };
+        this.classList.toggle('fa-eye-slash');
+        this.classList.toggle('fa-eye');
+        document.getElementById(mainContentId).hidden = !document.getElementById(mainContentId).hidden;
     };
     backgroundNavNextElt.onclick = async function() {
         settings = await fetchSettings();
         loadBackgroundImage(settings);
+    };
+    backgroundNavLikeElt.onclick = async function() {
+        document.body.dataset.picsumId;
+        this.classList.toggle('fa-solid');
+        this.classList.toggle('fa-regular');
     };
 }
 
