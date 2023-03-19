@@ -8,6 +8,7 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <!--Json Editor-->
     <link rel="stylesheet" href="css/jsoneditor.min.css" type="text/css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.3.0/css/all.css">
     <!--Custom CSS-->
     <link rel="stylesheet" href="css/main.css">
 </head>
@@ -52,35 +53,14 @@
     </div>
     <div id="controls">
         <div id="background-controls">
-            <!-- <a class="">
-                <i> 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="#607D8B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                        id="background-nav-prev">
-                        <line x1="19" y1="12" x2="5" y2="12"></line>
-                        <polyline points="12 19 5 12 12 5"></polyline>
-                    </svg>
-                </i>
-            </a> -->
             <a>
-                <i>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="#607D8B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                        id="background-nav-hide" data-hideControls="true">
-                        <rect x="6" y="4" width="16" height="16"></rect>
-                        <polyline points="6 4"></polyline>
-                    </svg>
-                </i>
+                <i class="fa-regular fa-bookmark background-nav-control" id="background-nav-like"></i>
+            </a>
+            <a>
+                <i class="fa-regular fa-eye background-nav-control" id="background-nav-hide" data-hideControls="true"></i>
             </a>
             <a class="">
-                <i>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        viewBox="0 0 24 24" fill="none" stroke="#607D8B" stroke-width="1.5" stroke-linecap="round"
-                        stroke-linejoin="round" id="background-nav-next">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                </i>
+                <i class="fa-solid fa-angles-right background-nav-control" id="background-nav-next"></i>
             </a>
         </div>
         <svg id="settings-cog" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings"
