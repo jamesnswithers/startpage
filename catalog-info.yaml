@@ -4,6 +4,10 @@ metadata:
   name: startpage
   annotations:
     github.com/project-slug: jamesnswithers/startpage
+  links:
+    - url: https://jamesnswithers.github.io/startpage/
+      title: startpage
+      icon: dashboard
 spec:
   type: other
   lifecycle: unknown
